@@ -14,7 +14,7 @@ L'idée de fond, derrière l'utilisation de composants, est de pouvoir assembler
 
 ## Eléments constitutifs d'un composant
 
-Comme je le disais, un composant est avant tout un élément visuel de notre application. Il est constitué d'une partie... bah visuelle, en HTML, appelée **template**, et d'une partie non visuelle, en Typescript, qui va nous permettre de définir son comportement (contrôhhles de saisie, récupération de données auprès d'un service, gestion d'événements...).
+Comme je le disais, un composant est avant tout un élément visuel de notre application. Il est constitué d'une partie... bah visuelle, en HTML, appelée **template**, et d'une partie non visuelle, en Typescript, qui va nous permettre de définir son comportement (contrôles de saisie, récupération de données auprès d'un service, gestion d'événements...).
 
 # Installation de l'environnement
 
@@ -123,3 +123,76 @@ Trois informations sont passées au décorateur:
 * styleUrls : c'est une liste de chemins vers des feuilles de style à appliquer à notre composant.
 
 > IMPORTANT : les styles définis dans le CSS d'un composant sont applicables UNIQUEMENT à ce composant. Même s'ils sont larges. Et ça, c'est le top! Aucun risque de conflit de classes CSS :)
+
+## Créons statiquement 3 utilisateurs dans notre composant racine
+
+Nous allons déclarer un tableau (une liste) d'utilisateurs dans _app.component.ts_, et y ajouter 3 utilisateurs en dur. Rien de dynamique, mais il faut bien commencer quelque part :)
+
+```ts
+import { Component } from '@angular/core';
+import { User } from "./models/user.model";
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+  public myUsers: User[] = [
+    {
+      id: 1,
+      firstName: "Lewis",
+      lastName: "Trondheim"
+    },
+    {
+      id: 2,
+      firstName: "Alexandro",
+      lastName: "Jodorowsky"
+    },
+    {
+      id: 3,
+      firstName: "Manu",
+      lastName: "Larcenet"
+    }
+  ];
+
+  title = 'demo-angular';
+}
+```
+
+Nous déclarons donc une propriété ```myUsers```, de type ```User[]```, c'est à dire un tableau de User (notre modèle défini précédemment). On remplit cet tableau avec trois utilisateurs en dur.
+
+On notera que pour pouvoir utiliser le type User, il faut l'importer. C'est la mission de la ligne:
+```ts
+import { User } from "./models/user.model";
+```
+On y indique le chemin du fichier qui contient notre classe User. Pas besoin d'ajouter le .ts à la fin, mais ce n'est pas grave s'il y est.
+
+## Affichage de nos utilisateurs sur la page
+
+Nous avons des données, il ne reste qu'à les afficher.
+
+Pour cela, nous allons évidemment taper dans le fichier HTML de notre composant: _src/app/app.component.html_
+
+Actuellement, il contient la page de démo, dont on se fout royalement. Allez, on efface tout et on va se faire une petite liste non ordonnée.
+
+Elle va avoir cette forme:
+
+```html
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  ...
+</ul>
+```
+
+L'idée est de répéter les balises ```<li></li>``` pour chacun des utilisateurs de notre tableau ```myUsers```, déclaré dans le contrôleur, dans le paragraphe précédent.
+
+Alors d'accord, la syntaxe n'est pas hyper intuitive, mais je vais l'expliquer:
+
+```html
+<ul>
+  <li *ngFor="let u of myUsers">{{u.firstName}} {{u.lastName}}</li>
+</ul>
+```
