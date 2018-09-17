@@ -169,20 +169,32 @@ import { User } from "./models/user.model";
 ```
 On y indique le chemin du fichier qui contient notre classe User. Pas besoin d'ajouter le .ts à la fin, mais ce n'est pas grave s'il y est.
 
-## Affichage de nos utilisateurs sur la page
+## Affichage du nombre d'utilisateurs
 
 Nous avons des données, il ne reste qu'à les afficher.
 
 Pour cela, nous allons évidemment taper dans le fichier HTML de notre composant: _src/app/app.component.html_
 
-Actuellement, il contient la page de démo, dont on se fout royalement. Allez, on efface tout et on va se faire une petite liste non ordonnée.
+Actuellement, il contient la page de démo, dont on se fout royalement. Allez, on efface tout et on met une petite div toute simple pour afficher la valeur de ```myUsers.length```.
 
-Elle va avoir cette forme:
+```html
+<div>Nombre d'utilisateurs : {{ myUsers.length }}</div>
+```
+
+Les doubles accolades permettent d'insérer le contenu d'une variable dans le HTML (pour se la péter, on peut appeller ça de l'interpolation).
+
+Ca va? alors allons un peu plus loin!
+
+## Affichage de nos utilisateurs sur la page avec une boucle \*ngFor
+
+On va les afficher dans une petite liste non ordonnée.
+
+Elle devra avoir cette forme finale:
 
 ```html
 <ul>
-  <li>Item 1</li>
-  <li>Item 2</li>
+  <li>prénom1 nom1</li>
+  <li>prénom2 nom2</li>
   ...
 </ul>
 ```
@@ -196,3 +208,15 @@ Alors d'accord, la syntaxe n'est pas hyper intuitive, mais je vais l'expliquer:
   <li *ngFor="let u of myUsers">{{u.firstName}} {{u.lastName}}</li>
 </ul>
 ```
+
+Comme on peut le voir, tout se joue au niveau du ```<li></li>```.
+
+Cette espèce d'attribut dégueu, ```*ngFor="let u of myUsers"```
+
+Littéralement, cela peut se traduire par "pour chaque élément u de ma liste myUsers"
+
+le nom "u" est totalement arbitraire. On pourrait tout aussi bien l'appeler Robert.
+
+Pour chaque élément de la liste myUsers donc, nous allons créer un élément ```<li>```, et afficher les propriétés firstName et lastName dans ce ```<li>```.
+
+> Pour information, l'astérisque devant l'attribut signifie que cet attribut affecte le DOM. On a aussi le \*ngIf, que nous verrons plus tard.
