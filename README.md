@@ -57,3 +57,69 @@ A notre niveau, les trois fichiers qui vont particulièrement nous intéresser d
 Dans ce composant racine de base, le css est vide, le html contient une partie du code de la page que nous pouvons voir dans le navigateur, et le ts contient quelques lignes de code Typescript.
 
 ## Une partie de la page ? et le reste, il est où ?
+
+Lorsqu'Angular construit l'application, le composant racine se trouve inséré dans un fichier HTML "modèle", situé dans _src/index.html_, au niveau de la balise ```<app-root></app-root>```.
+
+C'est dans ce fichier HTML qu'on insèrera les éventuels liens vers des polices externes ou bibliothèques d'icônes.
+
+# Avant de construire un premier composant
+
+Avant de créer un composant, nous allons explorer un peu le fonctionnement d'Angular en tapant sur le composant racine. C'est mal, mais cela va nous permetter de comprendre l'intérêt des composants par la suite.
+
+## Rappel sur l'architecture MVC
+
+En gros:
+
+* Le modèle représente les données qu'on manipule (par exemple des utilisateurs)
+* La vue sert à afficher les données qu'on manipule (dans notre cas, un affichage HTML)
+* Le contrôleur permet d'injecter le modèle (les données) dans la vue (HTML).
+
+Dans notre projet à l'état actuel (juste un composant racine, rien de plus), notre composant racine est constitué de:
+* Une vue : _src/app/app.component.html_
+* Un contrôleur : _src/app/app.component.ts_
+
+Aucun modèle n'est encore créé au moment où on parle.
+
+## Création du modèle "Utilisateur"
+
+Un modèle, c'est simplement une classe Typescript, contenue dans un fichier.
+
+Créons le fichier _src/app/models/user.model.ts_. Le chemin et le nom sont arbitraires.
+
+Là-dedans, nous allons décrire un utilisateur:
+
+```ts
+export class User {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+```
+
+## Examinons de plus près le contrôleur
+
+Ouvrons le fichier _src_app_app.component.ts_.
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'demo-angular';
+}
+```
+
+La partie du bas (```export class...```) nous est presque familière. C'est simplement la définition d'une classe en Typescript.
+
+La partie ```@Component(...)``` est appelée _décorateur_ et permet de donner des informations supplémentaires à Angular, pour qu'il comprenne que notre classe _AppComponent_ est une classe spéciale. Un composant, dans ce cas précis, mais le décorateur pourrait être différent.
+
+Trois informations sont passées au décorateur:
+* selector : c'est le nom de la balise qu'on utilisera quand on voudra insérer ce composant quelque part (_tiens tiens..- comme par hasard, dans index.html, on trouve ```<app-root>```_)
+* templateUrl : c'est le chemin vers le fichier HTML qui représente notre composant
+* styleUrls : c'est une liste de chemins vers des feuilles de style à appliquer à notre composant.
+
+> IMPORTANT : les styles définis dans le CSS d'un composant sont applicables UNIQUEMENT à ce composant. Même s'ils sont larges. Et ça, c'est le top! Aucun risque de conflit de classes CSS :)
